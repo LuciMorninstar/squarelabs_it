@@ -1,0 +1,310 @@
+/* Sora font */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Italianno&family=Libertinus+Sans:ital,wght@0,400;0,700;1,400&family=Metrophobic&family=Neonderthaw&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sora:wght@100..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+/* Outfit font */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Italianno&family=Libertinus+Sans:ital,wght@0,400;0,700;1,400&family=Metrophobic&family=Neonderthaw&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sora:wght@100..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+@import "tailwindcss";
+
+
+body{
+  @apply bg-background-color text-black font-sora
+
+}
+
+body::-webkit-scrollbar{
+  width:8px;
+
+}
+body::-webkit-scrollbar-track{
+  @apply bg-transparent
+}
+
+body::-webkit-scrollbar-thumb{
+  @apply rounded-full bg-primary-color
+}
+
+
+ /* infinite brand partners logo */
+
+
+@keyframes loop {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  width: max-content;      /* IMPORTANT */
+   gap: 3rem;    
+  animation: loop 20s linear infinite;
+}
+
+.card-container > div {
+  flex-shrink: 0;          /* IMPORTANT */
+}
+
+
+/* .swiper-pagination {
+  position: relative !important;
+  margin-top: 32px;
+}
+
+.swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: rgba(255,255,255,.3);
+  opacity: 1;
+  transition: all .3s;
+}
+
+.swiper-pagination-bullet-active {
+  width: 40px;
+  border-radius: 999px;
+  background: var(--primary-color);
+} */
+
+/* --------------testimonial------------- */
+.testimonial-swiper {
+  overflow: visible !important;
+  width: 100%;
+}
+
+.testimonial-slide {
+  width: 66% !important;
+  height: 420px;
+  transition: all 0.5s ease;
+}
+
+@media (max-width: 1024px) {
+  .testimonial-slide {
+    width: 75% !important;
+    height: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonial-slide {
+    width: 88% !important;
+    height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonial-slide {
+    width: 92% !important;
+    height: 280px;
+  }
+}
+/* ------------testimonial ends----------- */
+
+/* animations */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-up.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
+/* meet the team swiper — cube effect for < sm */
+.team-swiper-wrapper {
+  padding: 20px 0 50px 0; /* extra bottom padding so pagination dots don't overlap the card */
+}
+
+.team-swiper {
+  width: 280px;
+  height: 450px;
+}
+
+.team-swiper-slide {
+  border-radius: 18px;
+  overflow: hidden;
+  background: inherit;
+}
+
+/* cube effect needs opaque faces or it looks glitchy mid-rotation */
+.team-swiper .swiper-cube-shadow {
+  opacity: 0.25;
+}
+
+.team-swiper .swiper-pagination-bullet {
+  background: var(--text-secondary-color, #999);
+  opacity: 0.5;
+}
+
+.team-swiper .swiper-pagination-bullet-active {
+  background: var(--text-quarternary-color, #fff);
+  opacity: 1;
+}
+
+/* grid hover — smooth, no stutter */
+.team-card-hover {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, box-shadow;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.team-card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------Industries-worked---with----marquee---styles-------- */
+.marquee-wrapper {
+  width: 100%;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+}
+
+.marquee-track {
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee-wrapper:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+
+
+
+@layer base{
+
+  h1{
+    @apply text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold  font-sora transition-all duration-300 ease-in-out
+  }
+  h2{
+    @apply text-2xl lg:text-3xl xl:text-4xl font-semibold text-default-color font-sora transition-all duration-300 ease-in-out
+  }
+  /* 32px */
+  h3{
+    @apply text-xl lg:text-2xl xl:text-3xl text-default-color font-sora transition-all duration-300 ease-in-out
+  }
+  h4{
+    @apply text-sm lg:text-xl xl:text-2xl font-semibold text-default-color font-sora transition-all duration-300 ease-in-out
+  }
+
+}
+
+@theme{
+  /* colors */
+  --color-default-color:#FFFFFF;
+  --color-background-color:#F6F8F6; /* for body background */
+  --color-primary-color:rgb(15, 157, 69);
+  --color-secondary-color:rgb(140, 198, 63);
+  --color-tertiary-color:rgb(6, 21, 13); /* for footer background */
+  --color-quarternary-color:#062116; /*for what we do card bg*/
+  --color-footer-background-color:#101410;
+  --color-fifth-color:#1e3011;
+  --color-sixth-color:#183018;
+  --color-seventh-color:#ecf4e4;
+
+
+  /* for linear gradient */
+  /* #0F9D45 #8CC63F */
+  
+  /* text colors */
+  
+  --color-text-primary-color:rgb(140, 198, 63);
+  --color-text-secondary-color:rgb(100, 117, 109);
+  --color-text-tertiary-color:rgb(169, 175, 172);
+  --color-text-quarternary-color:#0B1F14;
+  --color-text-fifth-color:rgb(163, 165, 166);
+  --color-text-sixth-color:#64756D;
+  --color-text-seventh-color:#9ea0a2; /*our insight paragraph*/
+  --color-text-eight-color:#b7bdbd;
+  
+
+  /* --color-text-sixth-color: */
+
+
+  /* -----------font-section--------- */  
+  --font-sora:"Sora", sans-serif;
+  --font-outfit:"Outfit", sans-serif;
+  --font-opensans:"Open Sans", sans-serif;
+  --font-poppins:"Poppins", sans-serif;
+
+
+}
+
+@layer utilities{
+
+ .bg-gradient-background{
+    background-image: radial-gradient(120% 90% at 50% 0%, rgba(15,157,69,0.18) 0%, rgba(7,21,16,0) 55%), linear-gradient(180deg, #081B13 0%, #071510 60%, #050F0B 100%);
+  }
+
+  .top-bottom-gradient{
+    @apply bg-linear-to-b from-primary-color to-secondary-color text-transparent bg-clip-text
+}
+
+.hero-section{
+  @apply h-[calc(100dvh-60px)] lg:h-[calc(100vh-70px)]
+}
+
+.card-shadow{
+  @apply shadow-[-4px_4px_8px_0px_rgba(0,0,0,0.1)]
+}
+
+.paragraph_style{
+  @apply text-text-secondary-color text-lg lg:text-xl text-justify
+}
+
+.glassmorphism-effect{
+  @apply bg-white/5 backdrop-blur-sm
+        border border-white/10
+        hover:bg-white/10 transition-all duration-200
+}
+.button-style{
+  @apply w-max  flex flex-row gap-0 sm:gap-3 lg:gap-4 items-center justify-center rounded-4xl bg-primary-color px-3 py-4 sm:px-4 sm:py-4 lg:px-6 lg:py-4
+}
+.footer-background{
+  background: linear-gradient(135deg, #8CC63F 0%, #4FA95A 100%);
+}
+
+/* ----------cursor-----glow------------------- */
+/* ----------cursor-glow------------------- */
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background: radial-gradient(
+    300px circle at var(--x, 50%) var(--y, 50%),
+    rgba(15, 157, 69, 0.3),
+    rgba(15, 157, 69, 0.04) 40%,
+    transparent 70%
+  );
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .cursor-glow {
+    display: block;
+  }
+}
+
+}
