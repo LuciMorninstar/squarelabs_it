@@ -1,8 +1,19 @@
 import Image from "next/image";
+import HeroSection from "../components/HeroSection";
+import Partners from "@/components/Partners";
+import WhatWeDo from "@/components/WhatWeDo";
+import OurInsights from "@/components/OurInsights";
 
 export default function Home() {
-  console.log("hello i ma hero");
+
   return (
-    <h1>Hello</h1>
+    <>
+    <HeroSection/>s
+    <Partners/>
+    <WhatWeDo/>
+    <OurInsights/>
+
+
+    </>
   );
 }

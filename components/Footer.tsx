@@ -58,7 +58,7 @@ const Footer = () => {
               alt="squarelabs-logo"
               fill
             sizes="(max-width: 1024px) 80px, 192px"
-              className=" object-cover object-center"
+            className=" object-cover object-center"
             />
           </div>
         </div>
