@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image"
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { IoArrowForward } from "react-icons/io5";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import MegaMenu from "./MegaMenu"
@@ -18,6 +19,7 @@ interface NavItem{
     dropdown:boolean
 }
 const Navbar = () => {
+  const router = useRouter();
   const [openMenu, setOpenMenu] = useState<string |null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout>|null>(null);
 
@@ -68,20 +70,22 @@ const Navbar = () => {
 
         {/* Nav items */}
         <div className="hidden lg:flex flex-row gap-10">
-          {navItems.map((item) => (
-            <Link
-              href={item.link}
-              key={item.title}
-              style={{ position: "relative" }}
-              onMouseEnter={() => item.dropdown && handleMouseEnter(item.title)}
-              onMouseLeave={() => item.dropdown && handleMouseLeave()}
-            >
-              {/* Trigger row */}
-              <div className="group flex flex-row gap-3 items-center cursor-pointer">
-                <span className="text-text-quarternary-color font-outfit lg:text-lg group-hover:text-primary-color transition-all duration-200 ease-in-out">
-                  {item.title}
-                </span>
-                {item.dropdown && (
+          {navItems.map((item) =>
+            item.dropdown ? (
+              // Dropdown items: plain div trigger, NOT a Link — avoids nesting
+              // MegaMenu's <a> tags inside another <a>, which breaks HTML/hydration.
+              <div
+                key={item.title}
+                style={{ position: "relative" }}
+                onMouseEnter={() => handleMouseEnter(item.title)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => router.push(item.link)}
+              >
+                {/* Trigger row */}
+                <div className="group flex flex-row gap-3 items-center cursor-pointer">
+                  <span className="text-text-quarternary-color font-outfit lg:text-lg group-hover:text-primary-color transition-all duration-200 ease-in-out">
+                    {item.title}
+                  </span>
                   <MdKeyboardArrowDown
                     className={`
                       w-8 h-8 transition-all duration-300 ease-in-out
@@ -92,20 +96,32 @@ const Navbar = () => {
                       }
                     `}
                   />
+                </div>
+
+                {/* Mega menu — anchored to this nav item div */}
+                {megaMenuData[item.title as keyof typeof megaMenuData] && (
+                  <MegaMenu
+                    visible={openMenu === item.title}
+                    categories={megaMenuData[item.title as keyof typeof megaMenuData]}
+                    onClose={() => setOpenMenu(null)}
+                  />
                 )}
               </div>
-
-              {/* Mega menu — anchored to this nav item div */}
-              {item.dropdown && megaMenuData[item.title as keyof typeof megaMenuData] && (
-                <MegaMenu
-                  visible={openMenu === item.title}
-                  categories={megaMenuData[item.title as keyof typeof megaMenuData]}
-                  onClose={() => setOpenMenu(null)}
-
-                />
-              )}
-            </Link>
-          ))}
+            ) : (
+              // Non-dropdown items: safe to keep as real links, no nested <a> risk
+              <Link
+                href={item.link}
+                key={item.title}
+                style={{ position: "relative" }}
+              >
+                <div className="group flex flex-row gap-3 items-center cursor-pointer">
+                  <span className="text-text-quarternary-color font-outfit lg:text-lg group-hover:text-primary-color transition-all duration-200 ease-in-out">
+                    {item.title}
+                  </span>
+                </div>
+              </Link>
+            )
+          )}
         </div>
       </div>
 

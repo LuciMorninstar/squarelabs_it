@@ -14,7 +14,7 @@ export const ourInsights: Insight[] = [
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus a cum dolorem vel facilis. Necessitatibus, eligendi non dolorum ex dolores ipsa! Soluta sint et repellat suscipit iure dolores harum error voluptas minima, dolor sit hic, tempore vitae nisi, officiis debitis. aodjfhasdfhasdfhkjh kjasdhfkasfh ksajshdf",
     link: "/future",
-    image: "/images/insights/future.jpg",
+    image: "/images/home/future.jpg"
   },
   {
     title:
@@ -23,7 +23,7 @@ export const ourInsights: Insight[] = [
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus a cum dolorem vel facilis. Necessitatibus, eligendi non dolorum ex dolores ipsa! Soluta sint et repellat suscipit iure dolores harum error voluptas minima, dolor sit hic, tempore vitae nisi, officiis debitis.",
     link: "/engineering",
-    image: "/images/insights/engineering.jpg",
+    image: "/images/home/engineering.jpg",
   },
   {
     title:
@@ -32,6 +32,6 @@ export const ourInsights: Insight[] = [
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus a cum dolorem vel facilis. Necessitatibus, eligendi non dolorum ex dolores ipsa! Soluta sint et repellat suscipit iure dolores harum error voluptas minima, dolor sit hic, tempore vitae nisi, officiis debitis.",
     link: "/punchy",
-    image: "/images/insights/punchy.jpg",
+    image: "/images/home/punchy.jpg",
   },
 ]
