@@ -7,7 +7,7 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import 'swiper/css';
 import TestimonialCard from "./TestimonialCard"
 import { Autoplay } from 'swiper/modules';
-import { testimonials } from "../constants/homepage/testimonial";
+import { testimonials, type Testimonial as TestimonialType } from "../constants/homepage/testimonial";
 import gsap from 'gsap';
 
 
@@ -120,7 +120,7 @@ const Testimonial = () => {
           autoplay={{ delay: 4000, disableOnInteraction: true, waitForTransition: false }}
           className="testimonial-swiper"
         >
-          {(testimonials || []).map((item: Testimonial, index: number) => (
+          {(testimonials || []).map((item: TestimonialType, index: number) => (
             <SwiperSlide key={item.id} className="testimonial-slide">
               <TestimonialCard item={item} isActive={index === activeIndex} />
             </SwiperSlide>
@@ -128,7 +128,7 @@ const Testimonial = () => {
         </Swiper>
 
         <div className="flex items-center justify-center gap-2 mt-7">
-          {testimonials.map((_: Testimonial, index: number) => (
+          {testimonials.map((_: TestimonialType, index: number) => (
             <div
               key={index}
               className={`h-3 rounded-full bg-green-500 transition-all duration-300

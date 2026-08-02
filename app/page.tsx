@@ -5,6 +5,8 @@ import WhatWeDo from "@/components/WhatWeDo";
 import OurInsights from "@/components/OurInsights";
 import WhyUs from "@/components/WhyUs";
 import TrustSection from "@/components/TrustSection";
+import Collaborate from "@/components/Collborate";
+import Testimonial from "@/components/Testimonial";
 
 export default function Home() {
 
@@ -16,6 +18,9 @@ export default function Home() {
     <OurInsights/>
     <WhyUs/>
     <TrustSection/>
+    <Testimonial/>
+    <Collaborate/>
+
 
 
     </>

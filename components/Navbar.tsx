@@ -52,7 +52,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className="relative flex flex-row justify-between items-center px-6 lg:px-12 xl:px-16 xl:pt-3  "
+      className="relative flex flex-row justify-between items-center px-6 lg:px-12 xl:px-16 xl:pt-3 lg:py-2 "
       style={{ position: "relative" }}
     >
       {/* Left side */}

@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import CardDots from '../assets/testimonial/CardDots.svg';
 import type { Testimonial } from "../constants/homepage/testimonial"
 
 interface TestimonialCardProps {
@@ -45,8 +44,10 @@ const TestimonialCard = ({ item, isActive }: TestimonialCardProps) => {
       <div className="hidden sm:flex flex-row h-full">
         <div className="flex flex-col justify-between flex-1 p-8 xl:p-16">
           <Image
-            src={CardDots}
+            src="/svg/homePage/cardDots.svg"
             alt=""
+            width={32}
+            height={32}
             className="w-6 h-6 md:w-8 md:h-8 text-white shrink-0"
           />
           <p className="gsapQuote lg:pt-6 xl:pt-8 text-sm md:text-base lg:text-md xl:text-lg text-text-quarternary-color leading-7 my-4 flex-1 line-clamp-6">
