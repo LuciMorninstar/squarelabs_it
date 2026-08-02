@@ -2,27 +2,20 @@
 
 import { useState, useRef, useEffect } from "react";
 import { IoFilterOutline } from "react-icons/io5";
-import { FILTER_CATEGORIES, CASE_STUDIES } from "../constants/ourWorkPage";
+import {
+  FILTER_CATEGORIES,
+  CASE_STUDIES,
+  type FilterCategory,
+  type CaseStudy,
+} from "../constants/ourWorkPage/ourWorkPageData";
 import WidthWrapper from "./WidthWrapper";
 import CaseStudyRow from "./CaseStudyRow";
-
-interface FilterCategory {
-  id: string;
-  label: string;
-}
-
-interface CaseStudy {
-  id: string;
-  categories: string[];
-  [key: string]: unknown;
-}
 
 const ExploreOurWork = () => {
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // track which rows have entered the viewport
   const [visibleRows, setVisibleRows] = useState<Set<string>>(() => new Set());
   const rowRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
@@ -50,7 +43,6 @@ const ExploreOurWork = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // IntersectionObserver, observing each row individually
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
