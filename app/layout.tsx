@@ -1,8 +1,7 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Sora, Outfit } from "next/font/google";
 import "./globals.css";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -23,20 +22,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${sora.variable} ${outfit.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${sora.variable} ${outfit.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        
-        <Navbar/>
         {children}
-        <Footer/>
-        </body>
+      </body>
     </html>
   );
 }

@@ -66,40 +66,49 @@ body::-webkit-scrollbar-thumb{
   border-radius: 999px;
   background: var(--primary-color);
 } */
-
 /* --------------testimonial------------- */
 .testimonial-swiper {
   overflow: visible !important;
   width: 100%;
 }
 
+/* let slides of different heights sit centered instead of stretching */
+.testimonial-swiper .swiper-wrapper {
+  align-items: center;
+}
+
 .testimonial-slide {
   width: 66% !important;
+  transition: height 0.5s ease, width 0.5s ease;
+}
+
+.testimonial-slide-active {
   height: 420px;
-  transition: all 0.5s ease;
+}
+
+.testimonial-slide-inactive {
+  height: 320px;
 }
 
 @media (max-width: 1024px) {
-  .testimonial-slide {
-    width: 75% !important;
-    height: 380px;
-  }
+  .testimonial-slide { width: 75% !important; }
+  .testimonial-slide-active { height: 380px; }
+  .testimonial-slide-inactive { height: 300px; }
 }
 
 @media (max-width: 768px) {
-  .testimonial-slide {
-    width: 88% !important;
-    height: 320px;
-  }
+  .testimonial-slide { width: 88% !important; }
+  .testimonial-slide-active { height: 320px; }
+  .testimonial-slide-inactive { height: 260px; }
 }
 
 @media (max-width: 480px) {
-  .testimonial-slide {
-    width: 92% !important;
-    height: 280px;
-  }
+  .testimonial-slide { width: 92% !important; }
+  .testimonial-slide-active { height: 280px; }
+  .testimonial-slide-inactive { height: 230px; }
 }
 /* ------------testimonial ends----------- */
+
 
 /* animations */
 .fade-up {
@@ -262,7 +271,7 @@ body::-webkit-scrollbar-thumb{
 }
 
 .hero-section{
-  @apply h-[calc(100dvh-60px)] lg:h-[calc(100vh-70px)]
+  @apply h-[100dvh] lg:h-screen
 }
 
 .card-shadow{
@@ -279,10 +288,16 @@ body::-webkit-scrollbar-thumb{
         hover:bg-white/10 transition-all duration-200
 }
 .button-style{
-  @apply w-max  flex flex-row gap-0 sm:gap-3 lg:gap-4 items-center justify-center rounded-4xl bg-primary-color px-3 py-4 sm:px-4 sm:py-4 lg:px-6 lg:py-4
+  @apply w-max  flex flex-row gap-2 sm:gap-3 lg:gap-4 items-center justify-center rounded-4xl bg-primary-color px-3 py-4 sm:px-4 sm:py-4 lg:px-6 lg:py-4
 }
 .footer-background{
   background: linear-gradient(135deg, #8CC63F 0%, #4FA95A 100%);
+}
+
+/* ----------------------contact us section----------------- */
+.contact-title{
+  @apply block text-sm font-medium text-text-quarternary-color mb-2
+
 }
 
 /* ----------cursor-----glow------------------- */

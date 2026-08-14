@@ -74,7 +74,7 @@ const ExploreOurWork = () => {
     <WidthWrapper>
       <div className="max-lg:py-10 flex flex-col gap-8 lg:gap-10">
         {/* for nav - desktop (lg and up) */}
-        <div className="hidden lg:flex flex-row justify-between px-6 lg:px-10 xl:px-12 py-2 lg:py-4 xl:py-5 bg-footer-background-color mt-5 lg:mx-2 lg:rounded-xl lg:sticky lg:top-6 z-20">
+        <div className="hidden lg:flex flex-row justify-between px-6 lg:px-10 xl:px-12 py-2 lg:py-4 xl:py-5 bg-footer-background-color mt-5 lg:mx-2 lg:rounded-3xl lg:sticky lg:top-6 z-20">
           <h3 className="text-default-color font-semibold">Explore Our Work</h3>
           <div className="flex flex-row gap-4 items-center justify-center">
             {FILTER_CATEGORIES.map((category: FilterCategory) => (
