@@ -9,32 +9,32 @@ import WidthWrapper from "./WidthWrapper";
 const Collaborate = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const elements = sectionRef.current?.querySelectorAll<HTMLElement>("[data-animate]");
-    if (!elements) return;
+useEffect(() => {
+  const elements = sectionRef.current?.querySelectorAll<HTMLElement>("[data-animate]");
+  if (!elements) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).style.opacity = "1";
-            (entry.target as HTMLElement).style.transform = "translateY(0)";
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          (entry.target as HTMLElement).style.opacity = "1";
+          (entry.target as HTMLElement).style.transform = "translateY(0) scale(1)";
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
 
-    elements.forEach((el, i) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(40px)";
-      el.style.transition = `opacity 0.6s ease ${i * 0.15}s, transform 0.6s ease ${i * 0.15}s`;
-      observer.observe(el);
-    });
+  elements.forEach((el, i) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(40px) scale(0.92)";
+    el.style.transition = `opacity 0.8s ease ${i * 0.15}s, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 0.15}s`;
+    observer.observe(el);
+  });
 
-    return () => observer.disconnect();
-  }, []);
+  return () => observer.disconnect();
+}, []);
 
   return (
     <WidthWrapper>

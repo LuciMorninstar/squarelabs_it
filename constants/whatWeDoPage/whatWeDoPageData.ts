@@ -5,7 +5,7 @@ export interface WhatWeDoCard {
   icon:string;
   image:string
   lists?: string[];
-  desc?: string;
+desc?: string;
 }
 
 export interface WhatWeDoCategory {

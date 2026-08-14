@@ -18,32 +18,32 @@ const OurInsights = () => {
 
   const isLargeGrid = ourInsights.length <= 3 // on xl+, use grid if 3 or fewer
 
-  useEffect(() => {
-    const elements = sectionRef.current?.querySelectorAll<HTMLElement>("[data-animate]")
+ useEffect(() => {
+  const elements = sectionRef.current?.querySelectorAll<HTMLElement>("[data-animate]")
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const target = entry.target as HTMLElement
-            target.style.opacity = "1"
-            target.style.transform = "translateY(0)"
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.15 }
-    )
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLElement
+          target.style.opacity = "1"
+          target.style.transform = "translateY(0) scale(1)"
+          observer.unobserve(entry.target)
+        }
+      })
+    },
+    { threshold: 0.15 }
+  )
 
-    elements?.forEach((el, i) => {
-      el.style.opacity = "0"
-      el.style.transform = "translateY(30px)"
-      el.style.transition = `opacity 0.6s ease ${i * 0.15}s, transform 0.6s ease ${i * 0.15}s`
-      observer.observe(el)
-    })
+  elements?.forEach((el, i) => {
+    el.style.opacity = "0"
+    el.style.transform = "translateY(30px) scale(0.85)"
+    el.style.transition = `opacity 0.9s ease ${i * 0.15}s, transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 0.15}s`
+    observer.observe(el)
+  })
 
-    return () => observer.disconnect()
-  }, [])
+  return () => observer.disconnect()
+}, [])
 
   return (
     <SecondWidthWrapper>
@@ -66,7 +66,7 @@ const OurInsights = () => {
         </div>
 
         {/* MOBILE & TABLET — always swiper */}
-        <div data-animate className="relative w-full xl:hidden">
+        <div  className="relative w-full xl:hidden">
           <button
             onClick={() => swiperRef.current?.slidePrev()}
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10
@@ -108,7 +108,7 @@ const OurInsights = () => {
         </div>
 
         {/* DESKTOP — grid if ≤3, swiper if >3 */}
-        <div data-animate className="hidden xl:block">
+        <div  className="hidden xl:block">
           {isLargeGrid ? (
             // plain grid — no nav buttons needed
             <div className="grid grid-cols-3 gap-8">
@@ -166,7 +166,9 @@ const OurInsights = () => {
 
 // extracted card so it's not repeated twice
 const InsightCard = ({ insight }: { insight: Insight }) => (
-  <div className="relative rounded-tl-[60px] rounded-br-[60px] overflow-hidden min-h-[520px] xl:min-h-[620px] flex flex-col justify-end">
+  <div
+  data-animate
+   className="relative rounded-tl-[60px] rounded-br-[60px] overflow-hidden min-h-[520px] xl:min-h-[620px] flex flex-col justify-end">
     <Image
       src={insight.image}
       alt={insight.title}

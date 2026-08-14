@@ -22,33 +22,33 @@ const Testimonial = () => {
   const swiperBlockRef = useRef<HTMLDivElement>(null);
 
   // --- section entrance (observer) ---
-  useEffect(() => {
-    const elements = [heading1Ref.current, heading2Ref.current, swiperBlockRef.current];
+useEffect(() => {
+  const elements = [heading1Ref.current, heading2Ref.current, swiperBlockRef.current];
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const target = entry.target as HTMLElement;
-            target.style.opacity = '1';
-            target.style.transform = 'translateY(0)';
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLElement;
+          target.style.opacity = '1';
+          target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
 
-    elements.forEach((el, i) => {
-      if (!el) return;
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(30px)';
-      el.style.transition = `opacity 0.6s ease ${i * 0.2}s, transform 0.6s ease ${i * 0.2}s`;
-      observer.observe(el);
-    });
+  elements.forEach((el, i) => {
+    if (!el) return;
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity 0.7s ease ${i * 0.25}s, transform 0.7s cubic-bezier(0.25, 1, 0.5, 1) ${i * 0.25}s`;
+    observer.observe(el);
+  });
 
-    return () => observer.disconnect();
-  }, []);
+  return () => observer.disconnect();
+}, []);
 
   // --- per slide GSAP animation (same style as HeroSection) ---
   const animateSlide = (swiper: SwiperClass) => {
@@ -71,9 +71,9 @@ const Testimonial = () => {
 
   return (
     <section
-      ref={sectionRef}
-      className="bg-default-color flex flex-col gap-8 sm:gap-12 lg:gap-16 xl:gap-20 pt-12 xl:pt-16 xl:h-screen"
-    >
+  ref={sectionRef}
+  className="bg-default-color overflow-x-hidden flex flex-col gap-8 sm:gap-12 lg:gap-16 xl:gap-20 pt-12 xl:pt-16 xl:h-screen"
+>
       {/* heading */}
       <div className="flex flex-col gap-1 lg:gap-4 pl-8 lg:pl-16">
         <h1 ref={heading1Ref} className="text-text-quarternary-color font-sora font-semibold">

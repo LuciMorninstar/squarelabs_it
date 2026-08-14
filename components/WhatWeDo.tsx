@@ -16,32 +16,32 @@ const WhatWeDo = () => {
   const [hoveredCardId, setHoveredCardId] = useState<number>(1)
   const sectionRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const elements = sectionRef.current?.querySelectorAll<HTMLElement>("[data-animate]")
+useEffect(() => {
+  const elements = sectionRef.current?.querySelectorAll<HTMLElement>("[data-animate]")
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const target = entry.target as HTMLElement
-            target.style.opacity = "1"
-            target.style.transform = "translateY(0)"
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.2 }
-    )
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLElement
+          target.style.opacity = "1"
+          target.style.transform = "translateY(0) scale(1)"
+          observer.unobserve(entry.target)
+        }
+      })
+    },
+    { threshold: 0.2 }
+  )
 
-    elements?.forEach((el, i) => {
-      el.style.opacity = "0"
-      el.style.transform = "translateY(30px)"
-      el.style.transition = `opacity 0.6s ease ${i * 0.15}s, transform 0.6s ease ${i * 0.15}s`
-      observer.observe(el)
-    })
+  elements?.forEach((el, i) => {
+    el.style.opacity = "0"
+    el.style.transform = "translateY(30px) scale(0.85)"
+    el.style.transition = `opacity 0.8s ease ${i * 0.15}s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 0.15}s`
+    observer.observe(el)
+  })
 
-    return () => observer.disconnect()
-  }, [])
+  return () => observer.disconnect()
+}, [])
 
   return (
     <SecondWidthWrapper>

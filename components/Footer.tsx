@@ -10,31 +10,31 @@ import { footerLinks, socialLinks } from "../constants/footer/footerLinks";
 const Footer = () => {
    const footerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-   const elements = footerRef.current?.querySelectorAll<HTMLElement>("[data-animate]");
+useEffect(() => {
+  const elements = footerRef.current?.querySelectorAll<HTMLElement>("[data-animate]");
 
-   const observer = new IntersectionObserver(
-      (entries: IntersectionObserverEntry[]) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).style.opacity = "1";
-            (entry.target as HTMLElement).style.transform = "translateY(0)";
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
+  const observer = new IntersectionObserver(
+    (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          (entry.target as HTMLElement).style.opacity = "1";
+          (entry.target as HTMLElement).style.transform = "translateY(0) scale(1)";
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
 
-    elements?.forEach((el, i) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(30px)";
-      el.style.transition = `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s`;
-      observer.observe(el);
-    });
+  elements?.forEach((el, i) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(30px) scale(0.94)";
+    el.style.transition = `opacity 0.8s ease ${i * 0.08}s, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 0.08}s`;
+    observer.observe(el);
+  });
 
-    return () => observer.disconnect();
-  }, []);
+  return () => observer.disconnect();
+}, []);
 
 
 
@@ -66,37 +66,48 @@ const Footer = () => {
         {/* mid part */}
         <div className="w-full flex flex-col gap-7 max-lg:gap-6 xl:flex-row">
           <div className="w-full xl:w-3/5 grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-6 sm:gap-5 lg:grid-cols-4 xl:grid-cols-4">
-            {footerLinks.map((link) => (
-              <div data-animate key={link.title} className="flex flex-col gap-2 xl:gap-10">
-                <span className="text-2xl xl:text-3xl text-default-color font-sora">
-                  {link.title}
-                </span>
-                <ul>
-                  {link.links.map((l) => (
-                    <li
-                      key={l.url}
-                      className="text-base lg:text-xl xl:text-xl text-text-secondary-color font-outfit hover:text-text-primary-color transition-all duration-200 ease-in-out leading-10"
-                    >
-                      <Link href={l.url}>{l.name}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+           {footerLinks.map((link) => (
+  <div
+    data-animate
+    key={link.title}
+    className="group flex flex-col gap-2 xl:gap-10 transition-transform duration-300 ease-out hover:-translate-y-1"
+  >
+    <span className="text-2xl xl:text-3xl text-default-color font-sora">
+      {link.title}
+    </span>
+    <ul>
+      {link.links.map((l) => (
+        <li
+          key={l.url}
+          className="text-base lg:text-xl xl:text-xl text-text-secondary-color font-outfit hover:text-text-primary-color hover:translate-x-1 transition-all duration-200 ease-in-out leading-10"
+        >
+          <Link href={l.url}>{l.name}</Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+))}
           </div>
 
-          <div data-animate className="w-full xl:w-2/5 flex flex-col max-xl:items-center xl:items-end gap-3 xl:gap-5">
-            <span className="text-2xl xl:text-3xl text-default-color font-sora">
-              Follow Our Social
-            </span>
-            <div className="flex flex-row gap-6 xl:gap-12">
-              {socialLinks.map(({ name, icon, href }) => (
-                <Link key={name} href={href}>
-                  <Image src={icon} alt={name} width={32} height={32} className="size-6 xl:size-8 " />
-                </Link>
-              ))}
-            </div>
-          </div>
+         <div data-animate className="w-full xl:w-2/5 flex flex-col max-xl:items-center xl:items-end gap-3 xl:gap-5">
+  <span className="text-2xl xl:text-3xl text-default-color font-sora">
+    Follow Our Social
+  </span>
+  <div className="flex flex-row gap-6 xl:gap-12">
+    {socialLinks.map(({ name, icon, href }, i) => (
+      <Link
+        key={name}
+        href={href}
+        className="transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-110"
+        style={{
+          transitionDelay: `${i * 60}ms`,
+        }}
+      >
+        <Image src={icon} alt={name} width={32} height={32} className="size-6 xl:size-8" />
+      </Link>
+    ))}
+  </div>
+</div>
         </div>
 
         {/* bottom part */}

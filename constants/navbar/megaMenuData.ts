@@ -1,147 +1,147 @@
-type MegaMenuCategory = "What we do" | "Who we are";
-interface MegaMenuItem{
-    title:string;
-    description:string;
-    href:string;
+// constants/navbar/megaMenuData.ts
+
+export interface MegaMenuLink {
+  title: string;
+  href: string;
+  description: string;
 }
 
-interface MegaMenuSection{
-    id:string;
-    label:string;
-    items:MegaMenuItem[];
+export interface MegaMenuCategory {
+  id: string;
+  label: string;
+  items: MegaMenuLink[];
 }
-type MegaMenuData = Record<MegaMenuCategory,MegaMenuSection[]>;
 
-export const megaMenuData : MegaMenuData = {
-  "What we do": [
-    {
-      id: "digital-products",
-      label: "Digital Products",
-      items: [
-        {
-          title: "UI/UX Design",
-          description: "Design UI/UX interfaces for effortless user interaction.",
-          href: "/services/ui-ux-design",
-        },
-        {
-          title: "Web Development",
-          description: "Specialized custom website development services.",
-          href: "/services/web-development",
-        },
-        {
-          title: "Mobile Applications",
-          description: "Building custom apps for seamless user experience.",
-          href: "/services/mobile-apps",
-        },
-      ],
-    },
-    {
-      id: "growth-solutions",
-      label: "Growth Solutions",
-      items: [
-        {
-          title: "Digital Marketing",
-          description: "Designing digital path that echos with audience.",
-          href: "/services/digital-marketing",
-        },
-        {
-          title: "SEO Optimization",
-          description: "Enhancing search engine ranking with effective SEO.",
-          href: "/services/seo-optimization",
-        },
-        {
-          title: "Brand Strategy",
-          description: "Bringing ideas to life.",
-          href: "/service/brand-strategy",
-        },
-      ],
-    },
-    {
-      id: "technology",
-      label: "Technology",
-      items: [
-        {
-          title: "Domain & Hosting",
-          description: "Secure, reliable hosting solutions and management.",
-          href: "/services/domain-and-hosting",
-        },
-        {
-          title: "Cloud Solutions",
-          description: "Cloud database management services.",
-          href: "/services/cloud-solutions",
-        },
-        {
-          title: "Maintenance Support",
-          description: "24/7 maintenance support and services.",
-          href: "/services/maintenance-support",
-        },
-      ],
-    },
-  ],
+export interface MegaMenuFeatured {
+  title: string;
+  description: string;
+  href: string;
+  ctaLabel: string;
+}
 
-  "Who we are": [
-    {
-      id: "about-us",
-      label: "About Us",
-      items: [
-        {
-          title: "Our Story",
-          description: "How we started and where we're headed.",
-          href: "/about/our-story",
-        },
-        {
-          title: "Mission & Vision",
-          description: "The purpose and direction that drives everything we do.",
-          href: "/about/mission",
-        },
-        {
-          title: "Our Values",
-          description: "The principles we hold ourselves accountable to.",
-          href: "/about/values",
-        },
-      ],
+export interface MegaMenuSection {
+  categories: MegaMenuCategory[];
+  featured: MegaMenuFeatured;
+}
+
+export const megaMenuData: Record<string, MegaMenuSection> = {
+  services: {
+    categories: [
+      // --- from "What We Do" ---
+      {
+        id: "digital-products",
+        label: "Digital Products",
+        items: [
+          {
+            title: "UI/UX Design",
+            description: "Design UI/UX interfaces for effortless user interaction.",
+            href: "/what-we-do#ui-ux-design",
+          },
+          {
+            title: "Web Development",
+            description: "Specialized custom website development services.",
+            href: "/what-we-do#web-development",
+          },
+          {
+            title: "Mobile Applications",
+            description: "Building custom apps for seamless user experience.",
+            href: "/what-we-do#mobile-apps",
+          },
+        ],
+      },
+      {
+        id: "growth-solutions",
+        label: "Growth Solutions",
+        items: [
+          {
+            title: "Digital Marketing",
+            description: "Designing digital path that echos with audience.",
+            href: "/what-we-do#digital-marketing",
+          },
+          {
+            title: "SEO Optimization",
+            description: "Enhancing search engine ranking with effective SEO.",
+            href: "/what-we-do#seo-optimization",
+          },
+          {
+            title: "Brand Strategy",
+            description: "Bringing ideas to life.",
+            href: "/what-we-do#brand-strategy",
+          },
+        ],
+      },
+    
+      // --- from "Who We Are" ---
+      {
+        id: "about-us",
+        label: "About Us",
+        items: [
+          {
+            title: "Our Story",
+            description: "How we started and where we're headed.",
+            href: "/who-we-are#our-story",
+          },
+          {
+            title: "Mission & Vision",
+            description: "The purpose and direction that drives everything we do.",
+            href: "/who-we-are#mission",
+          },
+          {
+            title: "Our Values",
+            description: "The principles we hold ourselves accountable to.",
+            href: "/who-we-are#values",
+          },
+        ],
+      },
+      {
+        id: "our-people",
+        label: "Our People",
+        items: [
+          {
+            title: "Meet the Team",
+            description: "The people behind the work and the vision.",
+            href: "/who-we-are#team",
+          },
+          {
+            title: "Life at SquareLabs",
+            description: "Culture, environment, and what it feels like to work here.",
+            href: "/who-we-are#life",
+          },
+          {
+            title: "Careers",
+            description: "Bringing ideas to visual life — join us.",
+            href: "/who-we-are#careers",
+          },
+        ],
+      },
+      {
+        id: "company",
+        label: "Company",
+        items: [
+          {
+            title: "Testimonials",
+            description: "What our clients say about working with us.",
+            href: "/who-we-are#testimonials",
+          },
+          {
+            title: "Partners",
+            description: "The trusted partners we collaborate with.",
+            href: "/who-we-are#partners",
+          },
+          {
+            title: "Press & Media",
+            description: "Coverage, announcements, and media resources.",
+            href: "/who-we-are#press",
+          },
+        ],
+      },
+    ],
+    // Resources lives here instead of taking its own nav slot
+    featured: {
+      title: "Explore our Resources",
+      description: "Blog posts, case studies, and guides to help you plan your next project.",
+      href: "/resources",
+      ctaLabel: "Browse resources",
     },
-    {
-      id: "our-people",
-      label: "Our People",
-      items: [
-        {
-          title: "Meet the Team",
-          description: "The people behind the work and the vision.",
-          href: "/about/team",
-        },
-        {
-          title: "Life at SquareLabs",
-          description: "Culture, environment, and what it feels like to work here.",
-          href: "/about/life",
-        },
-        {
-          title: "Careers",
-          description: "Bringing ideas to visual life — join us.",
-          href: "/careers",
-        },
-      ],
-    },
-    {
-      id: "company",
-      label: "Company",
-      items: [
-        {
-          title: "Testimonials",
-          description: "What our clients say about working with us.",
-          href: "/about/testimonials",
-        },
-        {
-          title: "Partners",
-          description: "The trusted partners we collaborate with.",
-          href: "/about/partners",
-        },
-        {
-          title: "Press & Media",
-          description: "Coverage, announcements, and media resources.",
-          href: "/about/press",
-        },
-      ],
-    },
-  ],
+  },
 };

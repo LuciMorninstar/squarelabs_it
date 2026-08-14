@@ -1,48 +1,59 @@
-"use client"
+"use client";
 
 import { useRef, useState, useEffect } from "react";
-import Image from "next/image"
-
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { IoArrowForward } from "react-icons/io5";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import MegaMenu from "./MegaMenu"
-import {megaMenuData} from "../constants/navbar/megaMenuData"
+import MegaMenu from "./MegaMenu";
+import { megaMenuData } from "../constants/navbar/megaMenuData";
 import { FiMenu } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
 
-
-interface NavItem{
-    title:string,
-    link:string,
-    dropdown:boolean
+interface NavItem {
+  title: string;
+  link: string;
+  dropdown: boolean;
+  key: string | null; // matches a key in megaMenuData, or null if no dropdown
+  desktopOnly?: boolean; // set to false to hide from desktop nav (still shows on mobile)
 }
+
+// Exactly 4 top-level items on desktop — Services merges "What We Do" + "Who We Are".
+// Resources is mobile-only (desktopOnly: false) and also lives inside the Services
+// mega menu as a featured card on desktop.
+const navItems: NavItem[] = [
+  { title: "Home", link: "/", dropdown: false, key: null },
+  { title: "About", link: "/what-we-do", dropdown: true, key: "services" },
+  { title: "Our Work", link: "/our-work", dropdown: false, key: null },
+  { title: "Resources", link: "/resources", dropdown: false, key: null, desktopOnly: false },
+  { title: "Contact Us", link: "/contact-us", dropdown: false, key: null },
+];
+
 const Navbar = () => {
   const router = useRouter();
-  const [openMenu, setOpenMenu] = useState<string |null>(null);
-  const closeTimer = useRef<ReturnType<typeof setTimeout>|null>(null);
+  const pathname = usePathname();
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // mobile sidebar state
   const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
 
-  const navItems: NavItem[] = [
-    { title: "What we do", link: "/what-we-do", dropdown: true },
-    { title: "Who we are", link: "/who-we-are", dropdown: true },
-    { title: "Our work", link: "/our-work", dropdown: false },
-    { title: "Resources", link: "/resources", dropdown: false },
-  ];
-
-  const handleMouseEnter = (title:string) => {
-    if(closeTimer.current) clearTimeout(closeTimer.current);
-    setOpenMenu(title);
+  const handleMouseEnter = (key: string) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpenMenu(key);
   };
 
   const handleMouseLeave = () => {
     closeTimer.current = setTimeout(() => setOpenMenu(null), 150);
   };
 
-  // lock body scroll while the mobile sidebar is open
+  // Home is only active on the exact root; other links are active on exact
+  // match or any nested route beneath them (e.g. /our-work/some-project).
+  const isActive = (link: string) => {
+    if (link === "/") return pathname === "/";
+    return pathname === link || pathname.startsWith(link + "/");
+  };
+
   useEffect(() => {
     document.body.style.overflow = mobileNavOpen ? "hidden" : "";
     return () => {
@@ -52,8 +63,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className="relative flex flex-row justify-between items-center px-6 lg:px-12 xl:px-16 xl:pt-3 lg:py-2 "
-      style={{ position: "relative" }}
+      className=" top-0 left-0 z-50 w-full flex flex-row justify-between items-center px-6 lg:px-12 xl:px-16 xl:pt-3 lg:py-2  bg-transparent shadow-sm "
+      style={{ position: "absolute" }}
     >
       {/* Left side */}
       <div className="flex flex-row gap-8 items-center justify-center">
@@ -68,66 +79,75 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Nav items */}
+        {/* Nav items - for less than lg screens */}
         <div className="hidden lg:flex flex-row gap-10">
-          {navItems.map((item) =>
-            item.dropdown ? (
-              // Dropdown items: plain div trigger, NOT a Link — avoids nesting
-              // MegaMenu's <a> tags inside another <a>, which breaks HTML/hydration.
-              <div
-                key={item.title}
-                style={{ position: "relative" }}
-                onMouseEnter={() => handleMouseEnter(item.title)}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => router.push(item.link)}
-              >
-                {/* Trigger row */}
-                <div className="group flex flex-row gap-3 items-center cursor-pointer">
-                  <span className="text-text-quarternary-color font-outfit lg:text-lg group-hover:text-primary-color transition-all duration-200 ease-in-out">
-                    {item.title}
-                  </span>
-                  <MdKeyboardArrowDown
-                    className={`
-                      w-8 h-8 transition-all duration-300 ease-in-out
-                      ${
-                        openMenu === item.title
-                          ? "rotate-180 text-primary-color"
-                          : "text-text-quarternary-color group-hover:text-primary-color"
-                      }
-                    `}
-                  />
-                </div>
+          {navItems
+            .filter((item) => item.desktopOnly !== false)
+            .map((item) =>
+              item.dropdown && item.key ? (
+                <div
+                  key={item.title}
+                  style={{ position: "relative" }}
+                  onMouseEnter={() => handleMouseEnter(item.key as string)}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={() => router.push(item.link)}
+                >
+                  <div className="group flex flex-row gap-3 items-center cursor-pointer">
+                    <span
+                      className={`font-outfit lg:text-lg transition-all duration-200 ease-in-out ${
+                        isActive(item.link)
+                          ? "text-green-500"
+                          : "text-gray-300 group-hover:text-primary-color"
+                      }`}
+                    >
+                      {item.title}
+                    </span>
+                    <MdKeyboardArrowDown
+                      className={`
+                        w-8 h-8 transition-all duration-300 ease-in-out
+                        ${
+                          openMenu === item.key
+                            ? "rotate-180 text-primary-color"
+                            : isActive(item.link)
+                            ? "text-green-500"
+                            : "text-gray-300 group-hover:text-primary-color"
+                        }
+                      `}
+                    />
+                  </div>
 
-                {/* Mega menu — anchored to this nav item div */}
-                {megaMenuData[item.title as keyof typeof megaMenuData] && (
-                  <MegaMenu
-                    visible={openMenu === item.title}
-                    categories={megaMenuData[item.title as keyof typeof megaMenuData]}
-                    onClose={() => setOpenMenu(null)}
-                  />
-                )}
-              </div>
-            ) : (
-              // Non-dropdown items: safe to keep as real links, no nested <a> risk
-              <Link
-                href={item.link}
-                key={item.title}
-                style={{ position: "relative" }}
-              >
-                <div className="group flex flex-row gap-3 items-center cursor-pointer">
-                  <span className="text-text-quarternary-color font-outfit lg:text-lg group-hover:text-primary-color transition-all duration-200 ease-in-out">
-                    {item.title}
-                  </span>
+                  {megaMenuData[item.key] && (
+                    <MegaMenu
+                      visible={openMenu === item.key}
+                      section={megaMenuData[item.key]}
+                      onClose={() => setOpenMenu(null)}
+                      onMouseEnter={() => handleMouseEnter(item.key as string)}
+                      onMouseLeave={handleMouseLeave}
+                    />
+                  )}
                 </div>
-              </Link>
-            )
-          )}
+              ) : (
+                <Link href={item.link} key={item.title} style={{ position: "relative" }}>
+                  <div className="group flex flex-row gap-3 items-center cursor-pointer">
+                    <span
+                      className={`font-outfit lg:text-lg transition-all duration-200 ease-in-out ${
+                        isActive(item.link)
+                          ? "text-green-500"
+                          : "text-gray-300 group-hover:text-primary-color"
+                      }`}
+                    >
+                      {item.title}
+                    </span>
+                  </div>
+                </Link>
+              )
+            )}
         </div>
       </div>
 
       {/* Right side CTA */}
       <Link
-        href="/start-a-project" 
+        href="/start-a-project"
         className="max-lg:hidden flex flex-row gap-2 items-center justify-center rounded-4xl bg-linear-to-r from-primary-color to-secondary-color lg:px-6 lg:py-4 px-4 py-3 self-center transition-all duration-300 ease-in"
       >
         <span className="text-default-color text-sm lg:text-base font-outfit">
@@ -135,14 +155,16 @@ const Navbar = () => {
         </span>
         <IoArrowForward className="text-default-color text-3xl font-light" />
       </Link>
-      {/* /Right side CTA */}
 
-      {/* //hamburger menu for small lg and less screens */}
-      <div onClick={()=>setMobileNavOpen(true)} className="lg:hidden p-1 rounded-xl cursor-pointer">
-        <FiMenu className ="text-3xl" />
+      {/* Hamburger */}
+      <div
+        onClick={() => setMobileNavOpen(true)}
+        className="lg:hidden p-1 rounded-xl cursor-pointer"
+      >
+        <FiMenu className="text-3xl text-default-color" />
       </div>
 
-      {/* //backdrop overlay — blocks clicks/scroll on content behind the sidebar */}
+      {/* Backdrop */}
       <div
         onClick={() => setMobileNavOpen(false)}
         className={`fixed inset-0 z-10 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ease-in-out ${
@@ -150,43 +172,45 @@ const Navbar = () => {
         }`}
       />
 
-      {/* //slide-in sidebar for lg and less — right to left */}
+      {/* Mobile sidebar */}
       <div
         className={`fixed top-0 right-0 z-20 h-screen w-[70%] max-w-sm bg-linear-to-b from-primary-color to-secondary-color shadow-2xl flex flex-col gap-2 px-8 pt-8 transform transition-transform duration-500 ease-in-out ${
           mobileNavOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* close button */}
         <div
-          onClick={()=>setMobileNavOpen(false)}
+          onClick={() => setMobileNavOpen(false)}
           className="self-end p-2 rounded-full border border-white/30 hover:border-white hover:bg-white/10 transition-all duration-300 ease-in-out cursor-pointer"
         >
           <AiOutlineClose className="text-2xl text-white" />
         </div>
-        {/* /close button */}
 
-        {/* for links */}
         <div className="flex flex-col gap-2 mt-10">
-          {
-            navItems.map((item) => (
-              <Link
-                key={item.title}
-                href={item.link}
-                onClick={() => setMobileNavOpen(false)}
-                className="group flex flex-row items-center justify-between py-4 border-b border-white/15"
+          {navItems.map((item) => (
+            <Link
+              key={item.title}
+              href={item.link}
+              onClick={() => setMobileNavOpen(false)}
+              className="group flex flex-row items-center justify-between py-4 border-b border-white/15"
+            >
+              <span
+                className={`font-outfit text-xl tracking-wide transition-all duration-300 ease-in-out group-hover:translate-x-2 ${
+                  isActive(item.link)
+                    ? "text-green-500"
+                    : "text-white group-hover:text-white/90"
+                }`}
               >
-                <span className="text-white font-outfit text-xl tracking-wide group-hover:translate-x-2 group-hover:text-white/90 transition-all duration-300 ease-in-out">
-                  {item.title}
-                </span>
-                <IoArrowForward className="text-white text-xl opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
-              </Link>
-            ))
-          }
+                {item.title}
+              </span>
+              <IoArrowForward
+                className={`text-xl opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-in-out ${
+                  isActive(item.link) ? "text-green-500" : "text-white"
+                }`}
+              />
+            </Link>
+          ))}
         </div>
-        {/* /for links */}
       </div>
-    
-
     </nav>
   );
 };

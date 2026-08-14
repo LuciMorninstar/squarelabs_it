@@ -11,20 +11,22 @@ const TestimonialCard = ({ item, isActive }: TestimonialCardProps) => {
 
   return (
     <div
-      className={`bg-default-color rounded-2xl overflow-hidden h-full shadow-[0_0_30px_rgba(0,0,0,0.5)] border transition-all duration-500
+      className={`bg-default-color rounded-2xl overflow-hidden h-full shadow-[0_0_30px_rgba(0,0,0,0.15)] border transition-all duration-500
         border-white/10 
-        ${isActive ? 'opacity-100 scale-100' : 'opacity-40 scale-95 pointer-events-none'}
+        ${isActive ? 'opacity-100 scale-100' : 'opacity-40 scale-90 pointer-events-none'}
       `}
     >
       {/* mobile layout */}
       <div className="flex sm:hidden flex-col gap-4 p-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 relative">
+          <div className="w-16 h-16 rounded-full overflow-hidden shrink-0">
             <Image
               src={item.image}
               alt={item.name}
-              fill
+              width={0}
+              height={0}
               sizes="64px"
+              style={{ width: '100%', height: '100%' }}
               className="gsapImage object-cover"
             />
           </div>
@@ -62,17 +64,19 @@ const TestimonialCard = ({ item, isActive }: TestimonialCardProps) => {
             </p>
           </div>
         </div>
-        <div className="flex-[0_0_38%] overflow-hidden rounded-r-2xl relative">
+        <div className="flex-[0_0_38%] overflow-hidden rounded-r-2xl">
           {item.image ? (
             <Image
               src={item.image}
               alt={item.name}
-              fill
+              width={0}
+              height={0}
               sizes="38vw"
+              style={{ width: '100%', height: '100%' }}
               className="gsapImage object-cover object-center"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-[#2d2d4e] to-[#1a1a2e] flex items-center justify-center">
+            <div className="w-full h-full bg-gradient-to-br from-[#2d2d4e] to-[ #1a1a2e] flex items-center justify-center">
               <span className="text-7xl font-bold text-white/10">{item.name.charAt(0)}</span>
             </div>
           )}
