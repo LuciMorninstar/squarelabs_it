@@ -6,6 +6,10 @@ import {
   IndustriesWorkedWith,
 } from "../constants/ourWorkPage/ourWorkPageData";
 
+// Tailwind delay utilities, cycled per card index for a light stagger.
+// Kept as literal class names (not built from arbitrary numbers) so
+// Tailwind's JIT scanner picks them up.
+const STAGGER_DELAYS = ["delay-0", "delay-100", "delay-200", "delay-300"];
 
 const Industries = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -20,7 +24,8 @@ const Industries = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("animate-in");
+            entry.target.classList.remove("opacity-0", "translate-y-6");
+            entry.target.classList.add("opacity-100", "translate-y-0");
             observer.unobserve(entry.target); // animate once
           }
         });
@@ -44,7 +49,10 @@ const Industries = () => {
       {/* wrapper */}
       <div className="flex flex-col gap-12 xl:gap-20 items-center justify-center ">
         {/* top section */}
-        <h1 data-animate className="fade-up text-center">
+        <h1
+          data-animate
+          className="text-center opacity-0 translate-y-6 transition-all duration-700 ease-out"
+        >
           Industries We Have{" "}
           <span className="top-bottom-gradient text-transparent bg-clip-text">
             Worked With
@@ -56,10 +64,13 @@ const Industries = () => {
 
         {/* for screen larger than lg size */}
         <div className="hidden lg:grid grid-cols-4 gap-4">
-          {IndustriesWorkedWith.map((industry) => (
+          {IndustriesWorkedWith.map((industry, i) => (
             <div
               key={industry?.id}
-              className="lg:px-16 lg:py-14 xl:px-20 xl:py-16 flex flex-col justify-center items-center gap-6 bg-default-color rounded-2xl shadow-lg"
+              data-animate
+              className={`lg:px-16 lg:py-14 xl:px-20 xl:py-16 flex flex-col justify-center items-center gap-6 bg-default-color rounded-2xl shadow-lg opacity-0 translate-y-6 transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-xl ${
+                STAGGER_DELAYS[i % STAGGER_DELAYS.length]
+              }`}
             >
               {/* for icon */}
               <div className="relative w-8 h-8 md:w-8 md:h-8 xl:w-10 xl:h-10 rounded-2xl">

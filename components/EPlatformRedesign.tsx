@@ -13,7 +13,8 @@ interface Card {
 const EPlatformRedesign = () => {
   const heroRef = useRef<HTMLDivElement>(null);
 
-  // scroll-reveal animation (data-animate + IntersectionObserver, matches rest of site)
+  // scroll-reveal animation (data-animate + IntersectionObserver)
+  // toggles plain Tailwind classes — no external CSS needed
   useEffect(() => {
     const els = heroRef.current?.querySelectorAll<HTMLElement>("[data-animate]");
     if (!els?.length) return;
@@ -22,7 +23,8 @@ const EPlatformRedesign = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
+            entry.target.classList.remove("opacity-0", "translate-y-6");
+            entry.target.classList.add("opacity-100", "translate-y-0");
             observer.unobserve(entry.target);
           }
         });
@@ -85,21 +87,30 @@ const EPlatformRedesign = () => {
         {/* left content */}
         <div className="relative z-10  h-full w-full lg:w-1/2 flex flex-col max-lg:items-center  gap-4 lg:gap-8 justify-center px-6 lg:px-12 text-left order-2 lg:order-1 ">
           <div className="flex flex-col gap-3">
-            <h4 className="top-bottom-gradient font-semibold uppercase">
+            <h4
+              data-animate
+              className="top-bottom-gradient font-semibold uppercase opacity-0 translate-y-6 transition-all duration-700 ease-out"
+            >
               Spotlight Project
             </h4>
-            <h1 data-animate className="text-default-color reveal-up">
+            <h1
+              data-animate
+              className="text-default-color opacity-0 translate-y-6 transition-all duration-700 ease-out delay-75"
+            >
               E-commerce Platform <span className="">Redesign</span>
             </h1>
           </div>
 
           <div className="flex flex-col gap-3">
-            <h4 className="top-bottom-gradient font-semibold uppercase">
+            <h4
+              data-animate
+              className="top-bottom-gradient font-semibold uppercase opacity-0 translate-y-6 transition-all duration-700 ease-out delay-150"
+            >
               The Problem
             </h4>
             <p
               data-animate
-              className="text-text-eight-color text-sm  lg:text-base xl:text-lg w-full reveal-up"
+              className="text-text-eight-color text-sm  lg:text-base xl:text-lg w-full opacity-0 translate-y-6 transition-all duration-700 ease-out delay-200"
             >
               Building digital experiences that solve real business problems.
               From websites to mobile apps, we design and develop solutions that
@@ -107,12 +118,15 @@ const EPlatformRedesign = () => {
             </p>
           </div>
           <div className="flex flex-col gap-3">
-            <h4 className="top-bottom-gradient font-semibold uppercase">
+            <h4
+              data-animate
+              className="top-bottom-gradient font-semibold uppercase opacity-0 translate-y-6 transition-all duration-700 ease-out delay-300"
+            >
               The Solutions
             </h4>
             <p
               data-animate
-              className="text-text-eight-color text-sm  lg:text-base xl:text-lg w-full reveal-up"
+              className="text-text-eight-color text-sm  lg:text-base xl:text-lg w-full opacity-0 translate-y-6 transition-all duration-700 ease-out delay-500"
             >
               Building digital experiences that solve real business problems.
               From websites to mobile apps, we design and develop solutions that
@@ -125,14 +139,14 @@ const EPlatformRedesign = () => {
         {/* right content */}
         <div
           data-animate
-          className="relative max-lg:px-6  w-full lg:w-1/2 flex flex-col items-center  order-1 lg:order-2  gap-4 lg:gap-6 reveal-up"
+          className="relative max-lg:px-6  w-full lg:w-1/2 flex flex-col items-center  order-1 lg:order-2  gap-4 lg:gap-6 opacity-0 translate-y-6 transition-all duration-700 ease-out delay-150"
         >
           {/* top cards */}
           <div className="grid grid-cols-2 gap-4 lg:gap-8">
             {cards.slice(0, 2).map((card) => (
               <div
                 key={card?.id}
-                className=" glassmorphism-effect flex flex-col text-center gap-6 px-4 py-4 lg:px-6 lg:py-8 rounded-2xl"
+                className="glassmorphism-effect flex flex-col text-center gap-6 px-4 py-4 lg:px-6 lg:py-8 rounded-2xl transition-transform duration-300 ease-out hover:-translate-y-1"
               >
                 <span className="text-text-secondary-color text-sm  lg:text-base xl:text-lg w-full">
                   {card?.title}
@@ -154,7 +168,7 @@ const EPlatformRedesign = () => {
             {cards.slice(2).map((card) => (
               <div
                 key={card?.id}
-                className="bg-primary-color sm:w-[70%] md:w-[55%] lg:w-[90%] xl:w-[72%] mx-auto rounded-2xl flex flex-col items-center  justify-center gap-6 py-4 lg:py-6"
+                className="bg-primary-color sm:w-[70%] md:w-[55%] lg:w-[90%] xl:w-[72%] mx-auto rounded-2xl flex flex-col items-center  justify-center gap-6 py-4 lg:py-6 transition-transform duration-300 ease-out hover:-translate-y-1"
               >
                 <span className="text-text-eight-color text-sm  lg:text-base xl:text-lg w-full text-center">
                   {card?.title}

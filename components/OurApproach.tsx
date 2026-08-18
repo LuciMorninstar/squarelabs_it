@@ -37,12 +37,12 @@ const OurApproach = () => {
       {/* wrapper */}
       <div className="flex flex-col gap-12 xl:gap-20 items-center justify-center">
         {/* top section */}
-        <h1 data-animate className="fade-up">
-          Our{" "}
-          <span className="top-bottom-gradient text-transparent bg-clip-text">
-            Approach
-          </span>
-        </h1>
+      <h1 data-animate className="rise-scale">
+  Our{" "}
+  <span className="top-bottom-gradient text-transparent bg-clip-text">
+    Approach
+  </span>
+</h1>
         {/* /top section ends */}
 
         {/* bottom section */}
