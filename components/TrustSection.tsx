@@ -65,7 +65,7 @@ const TrustSection = () => {
     <SecondWidthWrapper>
       <div
         ref={sectionRef}
-        className="py-16 lg:py-24 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-60"
+        className="py-16 lg:py-24 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20"
       >
         {/* left side */}
         <div className="flex flex-col gap-2 lg:gap-4 lg:p-0">
@@ -113,14 +113,14 @@ const TrustSection = () => {
         </div>
 
         {/* right side — each card observed individually */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 xl:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 xl:gap-4 py-20">
           {whatWeDoCards.map((card) => (
             <div
               data-animate
               key={card.title}
               className="p-16 lg:p-10 flex flex-col gap-6 items-center justify-center text-center bg-background-color card-shadow rounded-3xl"
             >
-              <div className="size-16 overflow-hidden relative">
+              <div className="size-12 overflow-hidden relative">
                 <Image
                   src={card.icon}
                   fill

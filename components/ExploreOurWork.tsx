@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { IoFilterOutline } from "react-icons/io5";
+import { IoChevronDown } from "react-icons/io5";
 import {
   FILTER_CATEGORIES,
   CASE_STUDIES,
@@ -15,9 +15,11 @@ const ExploreOurWork = () => {
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [visibleRows, setVisibleRows] = useState<Set<string>>(() => new Set());
   const rowRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const [navVisible, setNavVisible] = useState(false);
 
   const filteredStudies: CaseStudy[] =
     activeFilter === "all"
@@ -29,6 +31,12 @@ const ExploreOurWork = () => {
   const activeLabel = FILTER_CATEGORIES.find(
     (c: FilterCategory) => c.id === activeFilter,
   )?.label;
+
+  // simple one-time fade-up for the nav/heading block
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setNavVisible(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -43,6 +51,7 @@ const ExploreOurWork = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // fade-up case study rows as they scroll into view
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -72,19 +81,24 @@ const ExploreOurWork = () => {
 
   return (
     <WidthWrapper>
-      <div className="max-lg:py-10 flex flex-col gap-8 lg:gap-10">
-        {/* for nav - desktop (lg and up) */}
-        <div className="hidden lg:flex flex-row justify-between px-6 lg:px-10 xl:px-12 py-2 lg:py-4 xl:py-5 bg-footer-background-color mt-5 lg:mx-2 lg:rounded-3xl lg:sticky lg:top-6 z-20">
+      <div ref={wrapperRef} className="max-lg:py-10 flex flex-col gap-8 lg:gap-10 overflow-x-hidden">
+        {/* nav - desktop (lg and up) */}
+        <div
+          className={`hidden lg:flex flex-row justify-between px-6 lg:px-10 xl:px-12 py-2 lg:py-4 xl:py-5 bg-footer-background-color mt-5 lg:mx-2 lg:rounded-3xl lg:sticky lg:top-6 z-20 shadow-sm transition-all duration-500 ease-out ${
+            navVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+          }`}
+        >
           <h3 className="text-default-color font-semibold">Explore Our Work</h3>
+
           <div className="flex flex-row gap-4 items-center justify-center">
             {FILTER_CATEGORIES.map((category: FilterCategory) => (
               <button
                 key={category?.id}
                 onClick={() => setActiveFilter(category?.id)}
-                className={`cursor-pointer text-sm lg:text-base xl:text-lg transition-colors duration-300 ease-in-out ${
+                className={`cursor-pointer text-sm lg:text-base xl:text-lg pb-1 border-b-2 transition-colors duration-300 ${
                   activeFilter === category?.id
-                    ? "text-primary-color"
-                    : "text-default-color hover:text-primary-color"
+                    ? "text-primary-color border-primary-color"
+                    : "text-default-color border-transparent hover:text-primary-color hover:border-primary-color/40"
                 }`}
               >
                 {category?.label}
@@ -93,8 +107,12 @@ const ExploreOurWork = () => {
           </div>
         </div>
 
-        {/* for nav - mobile/tablet (below lg) */}
-        <div className="flex lg:hidden flex-col gap-8 items-center">
+        {/* nav - mobile/tablet (below lg) */}
+        <div
+          className={`flex lg:hidden flex-col gap-8 items-center transition-all duration-500 ease-out ${
+            navVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+          }`}
+        >
           <h1 className="text-text-quarternary-color">
             Explore Our <span className="top-bottom-gradient">Work</span>
           </h1>
@@ -102,37 +120,45 @@ const ExploreOurWork = () => {
           <div ref={dropdownRef} className="relative w-full max-w-60">
             <button
               onClick={() => setIsOpen((prev) => !prev)}
-              className="flex items-center justify-between w-full gap-6 cursor-pointer top-bottom-gradient px-5 py-3 rounded-2xl shadow-sm"
+              className="flex items-center justify-between w-full gap-6 cursor-pointer top-bottom-gradient px-5 py-3 rounded-2xl shadow-sm transition-shadow duration-300 hover:shadow-md"
             >
               <span className="text-text-secondary-color text-sm sm:text-base font-semibold">
                 {activeLabel}
               </span>
-              <IoFilterOutline className="w-5 h-5 text-text-quarternary-color shrink-0" />
+              <IoChevronDown
+                className={`w-5 h-5 text-text-quarternary-color shrink-0 transition-transform duration-300 ${
+                  isOpen ? "rotate-180" : "rotate-0"
+                }`}
+              />
             </button>
 
-            {isOpen && (
-              <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-2xl overflow-hidden z-10 shadow-lg">
-                {FILTER_CATEGORIES.map((category: FilterCategory) => (
-                  <button
-                    key={category?.id}
-                    onClick={() => {
-                      setActiveFilter(category?.id);
-                      setIsOpen(false);
-                    }}
-                    className={`w-full text-left px-5 py-3 text-sm transition-colors hover:bg-gray-50 ${
-                      activeFilter === category?.id
-                        ? "top-bottom-gradient font-semibold"
-                        : "text-gray-700"
-                    }`}
-                  >
-                    {category?.label}
-                  </button>
-                ))}
-              </div>
-            )}
+            <div
+              className={`absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-2xl overflow-hidden z-10 shadow-lg origin-top transition-all duration-250 ease-out ${
+                isOpen
+                  ? "opacity-100 scale-y-100 pointer-events-auto"
+                  : "opacity-0 scale-y-95 pointer-events-none"
+              }`}
+            >
+              {FILTER_CATEGORIES.map((category: FilterCategory) => (
+                <button
+                  key={category?.id}
+                  onClick={() => {
+                    setActiveFilter(category?.id);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full text-left px-5 py-3 text-sm transition-colors hover:bg-gray-50 ${
+                    activeFilter === category?.id
+                      ? "top-bottom-gradient font-semibold"
+                      : "text-gray-700"
+                  }`}
+                >
+                  {category?.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-        {/* /for nav */}
+        {/* /nav */}
 
         {/* case studies */}
         <div className="flex flex-col gap-10 py-8 px-4 lg:px-8">
@@ -144,10 +170,15 @@ const ExploreOurWork = () => {
                 if (el) rowRefs.current.set(study?.id, el);
                 else rowRefs.current.delete(study?.id);
               }}
-              className={`transition-all duration-700 ease-out ${
+              style={{
+                transitionDelay: visibleRows.has(study?.id)
+                  ? `${Math.min(i, 3) * 60}ms`
+                  : "0ms",
+              }}
+              className={`transition-all duration-500 ease-out ${
                 visibleRows.has(study?.id)
                   ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
+                  : "opacity-0 translate-y-4"
               }`}
             >
               <CaseStudyRow study={study} reverse={i % 2 !== 0} />
