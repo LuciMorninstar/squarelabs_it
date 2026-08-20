@@ -30,6 +30,17 @@ const navItems: NavItem[] = [
   { title: "Contact Us", link: "/contact-us", dropdown: false, key: null },
 ];
 
+// Predefined Tailwind delay utilities for the mobile menu stagger.
+// Kept as literal class names (not built from a template string) so
+// Tailwind's JIT scanner can actually find them at build time.
+const MOBILE_STAGGER_DELAYS = [
+  "delay-100",
+  "delay-150",
+  "delay-200",
+  "delay-250",
+  "delay-300",
+];
+
 const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -37,6 +48,10 @@ const Navbar = () => {
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
+
+  // Scroll-aware navbar: transparent over the hero, subtle blurred
+  // surface once the page has scrolled past it.
+  const [scrolled, setScrolled] = useState<boolean>(false);
 
   const handleMouseEnter = (key: string) => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -61,15 +76,29 @@ const Navbar = () => {
     };
   }, [mobileNavOpen]);
 
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 24);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <nav
-      className=" top-0 left-0 z-50 w-full flex flex-row justify-between items-center px-6 lg:px-12 xl:px-16 xl:pt-3 lg:py-2  bg-transparent shadow-sm "
+      className={`navbar-reveal top-0 left-0 z-50 w-full flex flex-row justify-between items-center px-6 lg:px-12 xl:px-16 xl:pt-3 lg:py-2 transition-all duration-500 ease-in-out ${
+        scrolled
+          ? "bg-black/40 backdrop-blur-md shadow-lg"
+          : "bg-transparent shadow-sm"
+      }`}
       style={{ position: "absolute" }}
     >
       {/* Left side */}
       <div className="flex flex-row gap-8 items-center justify-center">
         {/* Logo */}
-        <Link href="/" className="w-16 h-16 overflow-hidden">
+        <Link
+          href="/"
+          className="nav-logo w-16 h-16 overflow-hidden transition-transform duration-300 ease-out hover:scale-105"
+        >
           <Image
             width={100}
             height={100}
@@ -80,7 +109,7 @@ const Navbar = () => {
         </Link>
 
         {/* Nav items - for less than lg screens */}
-        <div className="hidden lg:flex flex-row gap-10">
+        <div className="nav-links hidden lg:flex flex-row gap-10">
           {navItems
             .filter((item) => item.desktopOnly !== false)
             .map((item) =>
@@ -94,10 +123,10 @@ const Navbar = () => {
                 >
                   <div className="group flex flex-row gap-3 items-center cursor-pointer">
                     <span
-                      className={`font-outfit lg:text-lg transition-all duration-200 ease-in-out ${
+                      className={`relative font-outfit lg:text-lg transition-all duration-200 ease-in-out after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-green-500 after:transition-all after:duration-300 after:ease-out ${
                         isActive(item.link)
-                          ? "text-green-500"
-                          : "text-gray-300 group-hover:text-primary-color"
+                          ? "text-green-500 after:w-full"
+                          : "text-gray-300 group-hover:text-primary-color after:w-0 group-hover:after:w-full"
                       }`}
                     >
                       {item.title}
@@ -130,10 +159,10 @@ const Navbar = () => {
                 <Link href={item.link} key={item.title} style={{ position: "relative" }}>
                   <div className="group flex flex-row gap-3 items-center cursor-pointer">
                     <span
-                      className={`font-outfit lg:text-lg transition-all duration-200 ease-in-out ${
+                      className={`relative font-outfit lg:text-lg transition-all duration-200 ease-in-out after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-green-500 after:transition-all after:duration-300 after:ease-out ${
                         isActive(item.link)
-                          ? "text-green-500"
-                          : "text-gray-300 group-hover:text-primary-color"
+                          ? "text-green-500 after:w-full"
+                          : "text-gray-300 group-hover:text-primary-color after:w-0 group-hover:after:w-full"
                       }`}
                     >
                       {item.title}
@@ -148,18 +177,26 @@ const Navbar = () => {
       {/* Right side CTA */}
       <Link
         href="/start-a-project"
-        className="max-lg:hidden flex flex-row gap-2 items-center justify-center rounded-4xl bg-linear-to-r from-primary-color to-secondary-color lg:px-6 lg:py-4 px-4 py-3 self-center transition-all duration-300 ease-in"
+        className="nav-cta group relative overflow-hidden max-lg:hidden flex flex-row gap-2 items-center justify-center rounded-4xl bg-linear-to-r from-primary-color to-secondary-color lg:px-6 lg:py-4 px-4 py-3 self-center transition-all duration-300 ease-in"
       >
-        <span className="text-default-color text-sm lg:text-base font-outfit">
+        <span className="relative z-10 text-default-color text-sm lg:text-base font-outfit">
           Start a Project
         </span>
-        <IoArrowForward className="text-default-color text-3xl font-light" />
+        <IoArrowForward className="relative z-10 text-default-color text-3xl font-light transition-transform duration-300 ease-out group-hover:translate-x-1" />
+        {/* subtle shine sweep on hover */}
+        <span
+          className="pointer-events-none absolute inset-0 -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-out"
+          style={{
+            background:
+              "linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.35) 45%, transparent 60%)",
+          }}
+        />
       </Link>
 
       {/* Hamburger */}
       <div
         onClick={() => setMobileNavOpen(true)}
-        className="lg:hidden p-1 rounded-xl cursor-pointer"
+        className="lg:hidden p-1 rounded-xl cursor-pointer transition-transform duration-300 ease-out hover:scale-110 active:scale-95"
       >
         <FiMenu className="text-3xl text-default-color" />
       </div>
@@ -186,12 +223,18 @@ const Navbar = () => {
         </div>
 
         <div className="flex flex-col gap-2 mt-10">
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <Link
               key={item.title}
               href={item.link}
               onClick={() => setMobileNavOpen(false)}
-              className="group flex flex-row items-center justify-between py-4 border-b border-white/15"
+              className={`group flex flex-row items-center justify-between py-4 border-b border-white/15 transition-all duration-500 ease-out ${
+                mobileNavOpen
+                  ? `opacity-100 translate-x-0 ${
+                      MOBILE_STAGGER_DELAYS[index % MOBILE_STAGGER_DELAYS.length]
+                    }`
+                  : "opacity-0 translate-x-6 delay-0"
+              }`}
             >
               <span
                 className={`font-outfit text-xl tracking-wide transition-all duration-300 ease-in-out group-hover:translate-x-2 ${

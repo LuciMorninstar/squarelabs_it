@@ -8,6 +8,10 @@
 @import "tailwindcss";
 
 
+html, body {
+  overflow-x: hidden;
+}
+
 body{
   @apply bg-background-color text-black font-sora
 
@@ -307,17 +311,44 @@ body::-webkit-scrollbar-thumb{
 }
 
 
-
-
-
 /* ---------ExloreOurWork ends------------ */
-
-
-
-
 
 /* -----------animation for what-we-do-page */
 
+/* ------------animation for contact-us page------------ */
+
+@keyframes navItemReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-logo {
+  opacity: 0;
+  animation: navItemReveal 0.7s 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.nav-links {
+  opacity: 0;
+  animation: navItemReveal 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.nav-cta {
+  opacity: 0;
+  animation: navItemReveal 0.7s 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.navbar-reveal {
+  animation: navbarReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ------------animation for contact-us page ends------------ */
 
 @layer base{
 
